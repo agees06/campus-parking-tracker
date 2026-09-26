@@ -54,3 +54,9 @@ def test_invalid_input_rejected(client):
         data={"vehicle_no": "MH12XY9999", "vehicle_type": "Truck"}
     )
     assert res2.status_code == 400
+
+    def test_intentional_pipeline_failure():
+    """Demonstrate CI/CD quality gate stopping broken code."""
+    expected_status = "working"
+    actual_status = "broken"
+    assert actual_status == expected_status, "Deliberate failure: Quality Gate demo!"
