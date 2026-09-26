@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Parking Slot Tracker</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --primary: #2563eb;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --border: #e2e8f0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+      flex: 1;
+    }
+    header {
+      margin-bottom: 24px;
+    }
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 26px;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+    .stat-val {
+      font-size: 28px;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+    .stat-available { color: var(--success); }
+    .stat-occupied { color: var(--danger); }
+    .card {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+    form {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    input, select, button {
+      padding: 10px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      font-size: 15px;
+    }
+    input { flex: 2; min-width: 180px; }
+    select { flex: 1; min-width: 130px; }
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    button:hover { opacity: 0.9; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .btn-release {
+      background: var(--danger);
+      padding: 6px 12px;
+      font-size: 13px;
+    }
+    footer {
+      text-align: center;
+      padding: 20px 0;
+      font-size: 13px;
+      color: #64748b;
+      border-top: 1px solid var(--border);
+    }
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      background: #e2e8f0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Campus Parking Slot Tracker</h1>
+      <p style="color: #64748b; margin: 0;">Automated Live Slot Monitor</p>
+    </header>
+
+    <!-- Slot Counters -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div>Total Slots</div>
+        <div class="stat-val">{{ total }}</div>
+      </div>
+      <div class="stat-card">
+        <div>Available Slots</div>
+        <div class="stat-val stat-available">{{ available }}</div>
+      </div>
+      <div class="stat-card">
+        <div>Occupied Slots</div>
+        <div class="stat-val stat-occupied">{{ occupied }}</div>
+      </div>
+    </div>
+
+    <!-- Park Vehicle Form -->
+    <div class="card">
+      <h3 style="margin-top:0;">Park a Vehicle</h3>
+      <form action="/park" method="POST">
+        <input type="text" name="vehicle_no" placeholder="Vehicle No (e.g. MH-12-AB-1234)" required />
+        <select name="vehicle_type" required>
+          <option value="Car">Car</option>
+          <option value="Bike">Bike</option>
+        </select>
+        <button type="submit">Park Vehicle</button>
+      </form>
+    </div>
+
+    <!-- Active Vehicles Table -->
+    <div class="card">
+      <h3 style="margin-top:0;">Currently Parked Vehicles</h3>
+      {% if vehicles %}
+      <table>
+        <thead>
+          <tr>
+            <th>Vehicle No</th>
+            <th>Type</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for v in vehicles %}
+          <tr>
+            <td><strong>{{ v.vehicle_no }}</strong></td>
+            <td><span class="badge">{{ v.vehicle_type }}</span></td>
+            <td>
+              <form action="/exit" method="POST" style="margin:0;">
+                <input type="hidden" name="vehicle_no" value="{{ v.vehicle_no }}">
+                <button type="submit" class="btn-release">Release</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p style="color: #64748b; margin: 0;">No vehicles currently parked.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Mandatory Footer with Commit SHA -->
+  <footer>
+    Campus Parking System | Commit ID: <strong>{{ commit }}</strong>
+  </footer>
+
+</body>
+</html>
