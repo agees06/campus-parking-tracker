@@ -68,7 +68,7 @@ def exit_vehicle():
     return redirect("/")
 
 
-@app.route("/slots")
+@app.route("/api/slots")
 def api_slots():
     """Mandatory JSON API endpoint returning live state."""
     total, occupied, available = get_slot_stats()
