@@ -7,7 +7,7 @@ A lightweight web application built with Python and Flask to track real-time par
 ## Live Deployment
 - **Production URL:** [https://campus-parking-tracker.onrender.com](https://campus-parking-tracker.onrender.com)
 - **Health Endpoint:** [https://campus-parking-tracker.onrender.com/health](https://campus-parking-tracker.onrender.com/health)
-- **Slots API:** [https://campus-parking-tracker.onrender.com/slots](https://campus-parking-tracker.onrender.com/slots)
+- **Slots API:** [https://campus-parking-tracker.onrender.com/api/slots](https://campus-parking-tracker.onrender.com/api/slots)
 
 ---
 
