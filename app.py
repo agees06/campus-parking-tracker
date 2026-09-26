@@ -15,7 +15,7 @@ def get_slot_stats():
     """Helper function to calculate slot counts dynamically."""
     occupied = len(parked_vehicles)
     available = max(0, TOTAL_SLOTS - occupied)
-    return total_capacity := TOTAL_SLOTS, occupied, available
+    return TOTAL_SLOTS, occupied, available
 
 
 @app.route("/")
